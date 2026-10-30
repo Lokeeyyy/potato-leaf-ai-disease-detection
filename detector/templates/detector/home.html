@@ -1,0 +1,145 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Potato AI | Disease Detection</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'detector/style.css' %}">
+</head>
+<body>
+
+    <nav class="navbar">
+        <h2>🌱 Potato AI</h2>
+        <div>
+            <a href="/">Home</a>
+            <a href="/history/">History</a>
+        </div>
+    </nav>
+
+    <main class="container">
+
+        <!-- Dashboard -->
+        <section class="dashboard">
+            <div class="card">
+                <h3>Total Predictions</h3>
+                <h2>{{ total_predictions }}</h2>
+            </div>
+
+            <div class="card">
+                <h3>Healthy</h3>
+                <h2>{{ healthy_count }}</h2>
+            </div>
+
+            <div class="card">
+                <h3>Early Blight</h3>
+                <h2>{{ early_blight_count }}</h2>
+            </div>
+
+            <div class="card">
+                <h3>Late Blight</h3>
+                <h2>{{ late_blight_count }}</h2>
+            </div>
+        </section>
+
+        <!-- Disease Distribution Chart -->
+        <section class="card chart-card">
+            <h2>Disease Distribution</h2>
+            <p>Percentage of predictions by disease category</p>
+
+            <div class="chart-row">
+                <span>Healthy</span>
+                <div class="chart-bar">
+                    <div class="bar healthy-bar"
+                         style="width: {{ healthy_percentage }}%">
+                    </div>
+                </div>
+                <strong>{{ healthy_percentage }}%</strong>
+            </div>
+
+            <div class="chart-row">
+                <span>Early Blight</span>
+                <div class="chart-bar">
+                    <div class="bar early-bar"
+                         style="width: {{ early_blight_percentage }}%">
+                    </div>
+                </div>
+                <strong>{{ early_blight_percentage }}%</strong>
+            </div>
+
+            <div class="chart-row">
+                <span>Late Blight</span>
+                <div class="chart-bar">
+                    <div class="bar late-bar"
+                         style="width: {{ late_blight_percentage }}%">
+                    </div>
+                </div>
+                <strong>{{ late_blight_percentage }}%</strong>
+            </div>
+        </section>
+
+        <!-- Hero -->
+        <section class="hero">
+            <h1>Potato Leaf Disease Detection</h1>
+            <p>AI-powered analysis to identify potato leaf diseases.</p>
+        </section>
+
+        <!-- Upload -->
+        <section class="card upload-box">
+            <h2>Upload Your Leaf Image</h2>
+            <p>Choose a clear potato leaf image for analysis.</p>
+
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                <input
+                    type="file"
+                    name="leaf_image"
+                    accept="image/png,image/jpeg,image/webp"
+                    required
+                >
+
+                <button class="btn" type="submit">
+                    Predict Disease
+                </button>
+            </form>
+
+            {% if error %}
+                <p>{{ error }}</p>
+            {% endif %}
+        </section>
+
+        <!-- Prediction Result -->
+        {% if prediction %}
+        <section class="card result">
+            <h2>Prediction Result</h2>
+
+            <img
+                src="data:image/jpeg;base64,{{ uploaded_image }}"
+                alt="Uploaded potato leaf"
+                class="preview"
+            >
+
+            <h2>{{ prediction }}</h2>
+            <p>{{ description }}</p>
+
+            <p>
+                <strong>Confidence:</strong> {{ confidence }}%
+            </p>
+
+            <h3>Recommended Actions</h3>
+            <p>{{ tips }}</p>
+
+            <a href="/" class="btn">Try Another Image</a>
+        </section>
+        {% endif %}
+
+    </main>
+
+    <footer class="footer">
+        Potato AI Disease Detection System
+    </footer>
+
+</body>
+</html>

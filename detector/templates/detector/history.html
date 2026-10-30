@@ -1,0 +1,61 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Potato AI | Prediction History</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'detector/style.css' %}">
+</head>
+<body>
+
+    <nav class="navbar">
+        <h2>🌱 Potato AI</h2>
+        <div>
+            <a href="/">Home</a>
+            <a href="/history/">History</a>
+        </div>
+    </nav>
+
+    <main class="container">
+        <section class="hero">
+            <h1>Prediction History</h1>
+            <p>Review previous potato leaf disease predictions.</p>
+        </section>
+
+        <section class="card">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Disease</th>
+                        <th>Confidence</th>
+                        <th>Date and Time</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for record in records %}
+                    <tr>
+                        <td>{{ record.ID }}</td>
+                        <td>{{ record.DISEASE }}</td>
+                        <td>{{ record.CONFIDENCE }}%</td>
+                        <td>{{ record.CREATED_AT }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="4">No prediction records found.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </section>
+    </main>
+
+    <footer class="footer">
+        Potato AI Disease Detection System
+    </footer>
+
+</body>
+</html>
